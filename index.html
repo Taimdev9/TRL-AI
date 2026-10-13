@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRL-AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="top-bar">
+    <button class="icon-btn" onclick="newChat()" title="محادثة جديدة">➕</button>
+    <h1 class="logo">TRL-AI</h1>
+    <button class="icon-btn" onclick="toggleMenu()" title="القائمة">☰</button>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>القائمة</h2>
+      <button class="icon-btn" onclick="toggleMenu()">✕</button>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="#" onclick="newChat()">💬 محادثة جديدة</a>
+      <a href="#">🕘 سجل المحادثات</a>
+      <a href="#">⚙️ الإعدادات</a>
+      <a href="#">👤 الحساب</a>
+    </nav>
+  </aside>
+
+  <main class="chat-area" id="chatArea">
+    <div class="message ai-message">
+      <span class="avatar">🤖</span>
+      <div class="bubble">مرحبا! أنا TRL-AI. كيف أقدر أساعدك اليوم؟</div>
+    </div>
+  </main>
+
+  <footer class="input-bar">
+    <button class="icon-btn plus-btn" onclick="attachFile()" title="إرفاق">+</button>
+    <input 
+      type="text" 
+      id="userInput" 
+      class="text-input"
+      placeholder="اسأل TRL-AI..."
+      autocomplete="off"
+      onkeydown="if(event.key==='Enter') sendMessage()"
+    />
+    <button class="icon-btn send-btn" onclick="sendMessage()" title="إرسال">➤</button>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
