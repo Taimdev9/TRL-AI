@@ -1,6 +1,11 @@
 // ===== إعدادات =====
-// رابط الباك إند (نغيّره لاحقًا لما نشغّل Colab)
-const API_URL = "http://localhost:8000/chat";
+const API_URL = "https://deflate-glory-reactor.ngrok-free.dev";
+
+// هيدر خاص لـ ngrok عشان ما يعرض صفحة تحذير
+const HEADERS = {
+  "Content-Type": "application/json",
+  "ngrok-skip-browser-warning": "true"
+};
 
 // ===== عناصر الصفحة =====
 const chatArea = document.getElementById("chatArea");
@@ -27,7 +32,6 @@ function newChat() {
 
 // ===== إرفاق ملف =====
 function attachFile() {
-  // مؤقتًا: رسالة تنبيه
   alert("ميزة إرفاق الملفات - قريبًا!");
 }
 
@@ -48,9 +52,7 @@ function addMessage(text, sender) {
   messageDiv.appendChild(bubble);
   chatArea.appendChild(messageDiv);
 
-  // ننزل لآخر رسالة
   chatArea.scrollTop = chatArea.scrollHeight;
-
   return messageDiv;
 }
 
@@ -86,18 +88,15 @@ async function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
 
-  // نضيف رسالة المستخدم
   addMessage(text, "user");
   userInput.value = "";
 
-  // رسالة "جاري الكتابة"
   const loadingDiv = addMessage("يكتب...", "ai");
 
   try {
-    // نتصل بالباك إند
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/chat`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: HEADERS,
       body: JSON.stringify({ message: text })
     });
 
@@ -105,10 +104,7 @@ async function sendMessage() {
 
     const data = await response.json();
 
-    // نستبدل "يكتب..." بالرد الفعلي
     loadingDiv.querySelector(".bubble").textContent = data.reply;
-
-    // نضيف أزرار التقييم
     addRatingBar(loadingDiv, data.interaction_id);
 
   } catch (error) {
@@ -120,14 +116,13 @@ async function sendMessage() {
 
 // ===== تقييم =====
 async function rateInteraction(interactionId, rating, activeBtn, otherBtn) {
-  // نبدل حالة الأزرار
   activeBtn.classList.add("active");
   otherBtn.classList.remove("active");
 
   try {
     await fetch(`${API_URL}/rate`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: HEADERS,
       body: JSON.stringify({
         interaction_id: interactionId,
         rating: rating
@@ -146,7 +141,7 @@ async function correctInteraction(interactionId) {
   try {
     const response = await fetch(`${API_URL}/correct`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: HEADERS,
       body: JSON.stringify({
         interaction_id: interactionId,
         correction: correction
