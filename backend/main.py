@@ -185,4 +185,4 @@ def stats():
         "corrected": len(corrected),
         "likes": len([m for m in memory if m["rating"] == 1]),
         "dislikes": len([m for m in memory if m["rating"] == -1])
-    }
+    } 
